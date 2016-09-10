@@ -1,6 +1,9 @@
 import cv2
 import math
 import numpy as np
+import requests
+import json
+
 DEBUG = True
 
 def init():
@@ -138,7 +141,7 @@ def reduceImgToCharList(boundedImg, ROIValList):
             name = str(num) + 'midChar.png'
             cv2.imwrite(name, cropped)
             num +=1
-        returnList.append(cropped)
+        returnList.append([cropped, x, y])
 
     return returnList
 
@@ -146,28 +149,36 @@ def resolveCharListToBinary(myCharList):
     bianCharList = []
     num = 0
     for char in myCharList:
-        temp = cv2.cvtColor(char, cv2.COLOR_BGR2GRAY)
+        temp = cv2.cvtColor(char[0], cv2.COLOR_BGR2GRAY)
         #assuming the distribution of pizels is bimodal, splitting across
         #the pure mean will split the modes
         #mean
-        tot = 0
-        totNum= 0
-        print temp.shape
-        for row in range(0, temp.shape[0]):
-            for col in range(0, temp.shape[1]):
-                tot += temp[row][col]
-                totNum += 1
-        if not totNum == 0:
-            print tot/totNum
-            cv2.threshold(temp, tot/num, 255, cv2.THRESH_BINARY)
-            bianCharList.append(temp)
-            name = str(num) + 'finChar.png'
-            if DEBUG:
-                cv2.imwrite(name, temp)
-            num+=1
+        _, bianImFinal = cv2.threshold(temp, 0 , 255, cv2.THRESH_BINARY_INV+cv2.THRESH_OTSU)
+        #TODO final check to be sure no silliness still remains
+        #TODO keep track of location on page in order to do context
+        bianCharList.append([bianImFinal, char[1], char[2]])
+        name = str(num) + 'finChar.png'
+        if DEBUG:
+            cv2.imwrite(name, bianImFinal)
+        num+=2
     return bianCharList
 
+def resolveExpressionToLatex(expression):
+    pointList = '[['
+    for row in range(0, expression[0].shape[0]):
+        for col in range(0, expression[0].shape[1]):
+            if expression[0][row, col] == 0:
+                pointList = pointList + '[' + str(row) + ',' + str(col) + '],'
+    pointList = pointList[:-1] + ']]'
+    classifiedImg = requests.post('http://cs221.herokuapp.com/recognize', data={'info':pointList})
+    print classifiedImg.content
+    return
+
+#def postImgToClassifier(img):
+
 def resolveBinListToLatex(myBinList):
+    for expression in myBinList:
+        resolveExpressionToLatex(expression)
     return
 
 myCap = init()
@@ -177,5 +188,5 @@ myROIValList = getROI(rawImg)
 myROI = myROIValList[0]
 boundedImg = reduceToROI(rawImg, myROI)
 myCharList = reduceImgToCharList(boundedImg, myROIValList)
-resolveCharListToBinary(myCharList)
-#resolveBinListToLatex(myCharList)
+myBianCharList = resolveCharListToBinary(myCharList)
+resolveBinListToLatex(myBianCharList)
