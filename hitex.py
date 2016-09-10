@@ -1,10 +1,20 @@
 import cv2
+import sys
+import random
 import math
 import numpy as np
 import requests
 import json
+import itertools as it
+import math
+import fractions
+import copy
 
+sys.setrecursionlimit(10000)
 DEBUG = True
+
+def dist(x, y):
+    return math.hypot(y[0]-x[0],y[1]-x[1])
 
 def init():
     camFeed = cv2.VideoCapture(1)
@@ -163,14 +173,62 @@ def resolveCharListToBinary(myCharList):
         num+=2
     return bianCharList
 
+def findEndpoint(prevDist, prevDiff,point, mutableList):
+    mutableList.remove(point)
+    if len(mutableList) == 0:
+        return point
+
+    mutableList.sort(key = lambda p: math.sqrt((p[0] - point[0])**2 + (p[1] - point[1])**2))
+    dist = math.sqrt((mutableList[0][0] - point[0])**2 + (mutableList[0][1] - point[1])**2)
+    diff = dist - prevDist
+
+    if dist > 2 * prevDist:
+        return point
+
+    return findEndpoint(dist, diff, mutableList[0], mutableList)
+
+def findNeighbor(point, mutableList, finalList):
+    mutableList.remove(point)
+    finalList.append(point)
+    if len(mutableList) == 0:
+        return finalList
+    mutableList.sort(key = lambda p: math.sqrt((p[0] - point[0])**2 + (p[1] - point[1])**2))
+    return findNeighbor(mutableList[0], mutableList, finalList)
+
+
+def resolvePointOrder(pointList):
+    mutableList = copy.deepcopy(pointList)
+    start = random.choice(pointList)
+    prevDiff = 100000
+    prevDist = 100000
+    edgePoint = findEndpoint(prevDiff, prevDist, start, mutableList)
+    mutableList = copy.deepcopy(pointList)
+    finalList = []
+    mask = np.zeros((500, 500), np.uint8)
+    finalOrder = findNeighbor(edgePoint, mutableList, finalList)
+    count = 0
+    for elem in finalOrder:
+        mask[elem[0]][elem[1]] = 255
+        name = 'a' + str(count) + 'dis.png'
+        cv2.imwrite(name, mask)
+        count+=1
+
+    realFinal = []
+    for index in range(0, len(finalOrder)):
+        realFinal.append([finalOrder[index][1], finalOrder[index][0]])
+    return '[' + str(realFinal) + ']'
+
 def resolveExpressionToLatex(expression):
-    pointList = '[['
+    evoth = True
+    pointList = []
     for row in range(0, expression[0].shape[0]):
         for col in range(0, expression[0].shape[1]):
             if expression[0][row, col] == 0:
-                pointList = pointList + '[' + str(row) + ',' + str(col) + '],'
-    pointList = pointList[:-1] + ']]'
-    classifiedImg = requests.post('http://cs221.herokuapp.com/recognize', data={'info':pointList})
+                pointList.append([row, col])
+
+    requestList = resolvePointOrder(pointList)
+    print requestList
+    classifiedImg = requests.post('http://cs221.herokuapp.com/recognize', data={'info':requestList})
     print classifiedImg.content
     return
 
