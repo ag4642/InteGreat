@@ -9,7 +9,6 @@
     <style include="shared-styles">
       :host {
         display: block;
-
         padding: 10px;
       }
     </style>
@@ -20,6 +19,7 @@
       <video-camera screenshot="{{screen}}" onClick="this.setajax"></video-camera>
       <iron-ajax 
       auto
+      url=""
       method="POST"
       body='{{screen}}'
       handle-as="json"
