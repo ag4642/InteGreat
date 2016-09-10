@@ -3,8 +3,8 @@
   "shell": "src/my-app.html",
   "fragments": [
     "src/my-camera.html",
-    "src/my-notebook.html",
-    "src/my-view3.html",
+    "src/my-notebooks.html",
+    "src/my-new-notebook.html",
     "src/my-view4.html",
     "src/my-view404.html"
   ],

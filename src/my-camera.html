@@ -1,5 +1,6 @@
 <link rel="import" href="../bower_components/polymer/polymer.html">
 <link rel="import" href="../bower_components/video-camera/video-camera.html">
+<link rel="import" href="../bower_components/iron-ajax/iron-ajax.html">
 <link rel="import" href="shared-styles.html">
 
 
@@ -12,16 +13,34 @@
         padding: 10px;
       }
     </style>
-    <div class="card">
-    <h1 align="center">Click on the screen to take a picture</h1>
-      <video-camera screenshot="{{screen}}" onClick=""></video-camera>
 
+
+    <div class="card">
+      <h1 align="center">Click on the screen to take a picture</h1>
+      <video-camera screenshot="{{screen}}" onClick="this.setajax"></video-camera>
+      <iron-ajax 
+      auto
+      method="POST"
+      body='{{screen}}'
+      handle-as="json"
+      on-response="hresponse"
+      last-response="{{ajaxResponse}}"></iron-ajax>
     </div>
   </template>
 
   <script>
     Polymer({
-      is: 'my-camera'
+      is: 'my-camera',
+
+      setajax: function () {
+        this.$.ajax.url="http://127.0.0.1:5000/add/";
+        this.$.ajax.generateRequest();
+      },
+      hresponse: function(request) {
+        console.log(request.detail.response);
+        console.log(this.$.ajax.lastResponse);
+        console.log(this.$.ajax.params);
+      }
     });
   </script>
 </dom-module>

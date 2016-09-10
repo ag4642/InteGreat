@@ -1,11 +1,12 @@
 <link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../bower_components/iron-flex-layout/iron-flex-layout.html">
 <link rel="import" href="../bower_components/neon-animation/neon-animated-pages.html">
 <link rel="import" href="../bower_components/neon-animation/neon-animations.html">
 <link rel="import" href="../bower_components/neon-animation/circles-page.html">
 <link rel="import" href="../bower_components/neon-animation/squares-page.html">
 <link rel="import" href="shared-styles.html">
 
-<dom-module id="my-notebook">
+<dom-module id="my-notebooks">
   <template>
    <style is="custom-style">
     body {
@@ -28,7 +29,7 @@
   </style>
 
   <div class="card">
-    <h1 align="center">My Notebook</h1>
+    <h1 align="center">My Notebooks</h1>
     <template is="dom-bind">
 
       <neon-animated-pages id="pages" selected="0">
@@ -43,7 +44,7 @@
 
 <script>
   Polymer({
-    is: 'my-notebook'
+    is: 'my-notebooks'
   });
 
   var scope = document.querySelector('template[is="dom-bind"]');
