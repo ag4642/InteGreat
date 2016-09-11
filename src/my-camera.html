@@ -1,8 +1,8 @@
 <link rel="import" href="../bower_components/polymer/polymer.html">
 <link rel="import" href="../bower_components/video-camera/video-camera.html">
 <link rel="import" href="../bower_components/iron-ajax/iron-ajax.html">
+<link rel="import" href="../bower_components/paper-button/paper-button.html">
 <link rel="import" href="shared-styles.html">
-
 
 <dom-module id="my-camera">
   <template>
@@ -13,18 +13,17 @@
       }
     </style>
 
-
     <div class="card">
-      <h1 align="center">Click on the screen to take a picture</h1>
-      <video-camera screenshot="{{screen}}" onClick="this.setajax"></video-camera>
+      <h1 align="center">Click anywhere on the image to take a picture</h1>
+      <video-camera screenshot="{{screen}}" onClick="setajax"></video-camera>      
       <iron-ajax 
-      auto
-      url=""
+      url="http://0.0.0.0:5000/"
       method="POST"
-      body='{{screen}}'
+      body=''
+      params=''
       handle-as="json"
       on-response="hresponse"
-      last-response="{{ajaxResponse}}"></iron-ajax>
+      last-response="{{ajaxResponse}}"></iron-ajax>     
     </div>
   </template>
 
@@ -32,9 +31,11 @@
     Polymer({
       is: 'my-camera',
 
-      setajax: function () {
-        this.$.ajax.url="http://127.0.0.1:5000/add/";
+      setajax: function() {
+        this.$.ajax.body='document.querySelector("video-camera").innerHTML.screenshot';
+        this.$.ajax.params= '{"codec":"video-camera.screenshot"}';
         this.$.ajax.generateRequest();
+        
       },
       hresponse: function(request) {
         console.log(request.detail.response);

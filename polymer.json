@@ -5,6 +5,7 @@
     "src/my-camera.html",
     "src/my-help.html",
     "src/my-solution.html",
+    "src/my-loading.html",
     "src/my-view404.html"
   ],
   "sourceGlobs": [

@@ -3,24 +3,20 @@
 
 <dom-module id="my-help">
   <template>
-   <style is="custom-style">
-    body {
-      overflow: hidden;
-      @apply(--layout-fullbleed);
-    }
-   
-    :root {
-      --color-one: var(--paper-cyan-300);
-      --color-two: var(--paper-orange-500);
-    }
-  </style>
+    <style include="shared-styles">
+      :host {
+        display: block;
+        padding: 10px;
+      }
+    </style>
 
   <div class="card">
     <h1 align="center">Help</h1>
     <template is="dom-bind">
-    <p align="center">Take a picture of the board and the solution will be displayed within seconds.</p>      
+    <p align="center">Step 1: Take a picture of the formula you wish to solve</p>
+     <p align="center">Step 2: Wait a few seconds for the answer to be calculated </p>
+     <p align="center">Step 3: Watch as the solution appears before your eyes</p>      
     </template>
-
   </div>
 </template>
 
