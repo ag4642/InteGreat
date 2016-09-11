@@ -11,8 +11,16 @@
 		</style>
 		
 		<div class="card"> 
-			<h1 align="center">Solution</h1>     
-
+			<h1 align="center">Solution</h1>    
+			<iron-ajax 
+      url="http://0.0.0.0:5000/"
+      method="GET"
+      body=''
+      params=''
+      handle-as="json"
+      on-response="hresponse"
+      last-response="{{ajaxResponse}}"></iron-ajax>      
+			<h2 align="center">363.33</h2>
 		</div>
 		
 	</template>
@@ -21,5 +29,7 @@
 		Polymer({
 			is: 'my-solution'
 		});
+
+		this.$.ajax.generateRequest();
 	</script>
 </dom-module>
