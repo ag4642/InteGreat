@@ -1,30 +1,31 @@
-InteGreat!
+#InteGreat!
 
 Integreat is a WebApp designed to let the user take a picture of a mathematical formula and view the solution. InteGreat uses optical character recognition to parse the mathematical formula and WolframAlpha's API to solve the problem. 
 
-Installation
+#Installation
 
 TODO: Describe the installation process
 
-Usage
+#Usage
 
 TODO: Write usage instructions
 
-Contributing
+#Contributing
 
-Fork it!
+#Fork it!
 Create your feature branch: git checkout -b my-new-feature
 Commit your changes: git commit -am 'Add some feature'
 Push to the branch: git push origin my-new-feature
 Submit a pull request :D
-History
+
+#History
 
 TODO: Write history
 
-Credits
+#Credits
 
 TODO: Write credits
 
-License
+#License
 
 TODO: Write license
