@@ -2,18 +2,24 @@
 <link rel="import" href="shared-styles.html">
 
 <dom-module id="my-solution">
-  <template>
+	<template>
+		<style include="shared-styles">
+			:host {
+				display: block;
+				padding: 10px;
+			}
+		</style>
+		
+		<div class="card"> 
+			<h1 align="center">Solution</h1>     
 
-  <div class="card"> 
-     <h1 align="center">Solution</h1>     
+		</div>
+		
+	</template>
 
-  </div>
-  
-</template>
-
-<script>
-  Polymer({
-    is: 'my-solution'
-  });
-</script>
+	<script>
+		Polymer({
+			is: 'my-solution'
+		});
+	</script>
 </dom-module>

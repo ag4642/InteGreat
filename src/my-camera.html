@@ -1,7 +1,6 @@
 <link rel="import" href="../bower_components/polymer/polymer.html">
 <link rel="import" href="../bower_components/video-camera/video-camera.html">
 <link rel="import" href="../bower_components/iron-ajax/iron-ajax.html">
-<link rel="import" href="../bower_components/paper-button/paper-button.html">
 <link rel="import" href="shared-styles.html">
 
 <dom-module id="my-camera">
@@ -15,7 +14,7 @@
 
     <div class="card">
       <h1 align="center">Click anywhere on the image to take a picture</h1>
-      <video-camera screenshot="{{screen}}" onClick="setajax"></video-camera>      
+      <video-camera  screenshot="{{screen}}" onClick="setajax"></video-camera>      
       <iron-ajax 
       url="http://0.0.0.0:5000/"
       method="POST"
